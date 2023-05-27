@@ -1,0 +1,53 @@
+from art import logo
+from art import vs
+import random
+from game_data import data
+import os
+
+print(logo)
+
+score = 0
+game_over = False
+
+# Select initial random entries
+a = random.choice(data)
+b = random.choice(data)
+
+while not game_over:
+    os.system('clear')  # Clear the screen
+
+    a_name = a['name']
+    a_desc = a['description']
+    a_country = a['country']
+    b_name = b['name']
+    b_desc = b['description']
+    b_country = b['country']
+
+    # Get the follower counts
+    follower_count_a = a['follower_count']
+    follower_count_b = b['follower_count']
+
+    print(f"Compare A: {a_name}, a {a_desc}, from {a_country}.")
+    print(vs)
+    print(f"Against B: {b_name}, a {b_desc}, from {b_country}.")
+
+    selection = input("Which has more followers? Type 'A' or 'B':\n").upper()
+
+    # Compare the follower counts
+    if (
+        (selection == 'A' and follower_count_a > follower_count_b)
+        or (selection == 'B' and follower_count_b > follower_count_a)
+    ):
+        score += 1
+        print("Correct!")
+    else:
+        game_over = True
+        print("Wrong answer. Game over!")
+
+    print(f"Your current score is: {score}\n")
+
+    # Set 'A' and select a new 'B'
+    a = a if follower_count_a > follower_count_b else b
+    b = random.choice(data)
+
+print("Thanks for playing!")
