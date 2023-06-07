@@ -2,7 +2,6 @@ import turtle
 import time
 import random
 
-# Constants
 STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 MOVE_DISTANCE = 20
 UP = 90
@@ -16,7 +15,7 @@ FOOD_SHAPE = "circle"
 ALIGNMENT = "center"
 FONT = ("Arial", 24, "normal")
 
-# Snake class
+
 class Snake:
     def __init__(self):
         self.segments = []
@@ -58,8 +57,10 @@ class Snake:
         if self.head.heading() != LEFT:
             self.head.setheading(RIGHT)
 
+    def grow(self):
+        self.add_segment(self.segments[-1].position())
 
-# Food class
+
 class Food(turtle.Turtle):
     def __init__(self):
         super().__init__()
@@ -76,7 +77,6 @@ class Food(turtle.Turtle):
         self.goto(random_x, random_y)
 
 
-# Scoreboard class
 class Scoreboard(turtle.Turtle):
     def __init__(self):
         super().__init__()
@@ -100,7 +100,6 @@ class Scoreboard(turtle.Turtle):
         self.write("GAME OVER", align=ALIGNMENT, font=FONT)
 
 
-# Main game
 def main():
     screen = turtle.Screen()
     screen.setup(width=600, height=600)
@@ -127,6 +126,7 @@ def main():
 
         if snake.head.distance(food) < 15:
             food.refresh()
+            snake.grow()
             scoreboard.increase_score()
 
         if (
@@ -143,6 +143,7 @@ def main():
                 game_is_on = False
                 scoreboard.game_over()
 
+    screen.mainloop()
 
-if __name__ == "__main__":
-    main()
+
+main()
