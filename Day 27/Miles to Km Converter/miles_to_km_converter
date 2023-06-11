@@ -1,0 +1,39 @@
+from tkinter import *
+
+
+class App:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Miles to Kilometers Converter")
+        self.master.minsize(width=300, height=100)
+        self.master.config(padx=20, pady=20)
+
+        # Label
+        self.input_label = Label(text="Miles:", font=("times new roman", 14))
+        self.input_label.grid(column=0, row=0)
+
+        # Entry
+        self.input = Entry(width=10)
+        self.input.grid(column=1, row=0)
+
+        # Button
+        self.button = Button(text="Convert", command=self.button_clicked)
+        self.button.grid(column=2, row=0)
+
+        # Output Label
+        self.output_label = Label(text="Kilometers:", font=("times new roman", 14))
+        self.output_label.grid(column=0, row=1)
+
+        # Result Label
+        self.result_label = Label(text="", font=("times new roman", 14))
+        self.result_label.grid(column=1, row=1)
+
+    def button_clicked(self):
+        miles = float(self.input.get())
+        kilometers = miles * 1.60934
+        self.result_label.config(text=f"{kilometers:.2f}")
+
+
+window = Tk()
+app = App(window)
+window.mainloop()
