@@ -1,0 +1,58 @@
+import requests
+import os
+from twilio.rest import Client
+from twilio.http.http_client import TwilioHttpClient
+
+# Function to fetch weather data from OpenWeatherMap API
+def fetch_weather_data(lat, lon, api_key):
+    OWM_Endpoint = "https://api.openweathermap.org/data/2.5/onecall"
+    weather_params = {
+        "lat": lat,
+        "lon": lon,
+        "appid": api_key,
+        "exclude": "current,minutely,daily"
+    }
+
+    response = requests.get(OWM_Endpoint, params=weather_params)
+    response.raise_for_status()
+    weather_data = response.json()
+    weather_slice = weather_data["hourly"][:12]
+
+    will_rain = False
+    for hour_data in weather_slice:
+        condition_code = hour_data["weather"][0]["id"]
+        if int(condition_code) < 700:
+            will_rain = True
+
+    return will_rain
+
+# Function to send an SMS notification using Twilio
+def send_sms_notification(account_sid, auth_token, from_number, to_number, message_body):
+    proxy_client = TwilioHttpClient()
+    proxy_client.session.proxies = {'https': os.environ['https_proxy']}
+
+    client = Client(account_sid, auth_token, http_client=proxy_client)
+    message = client.messages.create(
+        body=message_body,
+        from_=from_number,
+        to=to_number
+    )
+    return message.status
+
+# Fetch API keys and other sensitive information from environment variables
+api_key = os.environ.get("OWM_API_KEY")
+account_sid = "YOUR ACCOUNT SID"
+auth_token = os.environ.get("AUTH_TOKEN")
+lat = os.environ.get("LATITUDE")
+lon = os.environ.get("LONGITUDE")
+from_number = os.environ.get("TWILIO_VIRTUAL_NUMBER")
+to_number = os.environ.get("TWILIO_VERIFIED_REAL_NUMBER")
+
+# Check if it will rain in the next 12 hours
+will_rain = fetch_weather_data(lat, lon, api_key)
+
+# Send SMS notification if it will rain
+if will_rain:
+    message_body = "It's going to rain today. Remember to bring an ☔️"
+    message_status = send_sms_notification(account_sid, auth_token, from_number, to_number, message_body)
+    print(message_status)
