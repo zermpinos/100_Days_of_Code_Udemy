@@ -41,7 +41,6 @@ for listing in all_listings:
         if elements.text == "Submit application":
             elements.click()
             break
-    escape_application = driver.find_element(By.ID, 'ember498')
     close_button = driver.find_element(By.CLASS_NAME, "artdeco-modal__dismiss")
     close_button.click()
 time.sleep(5)
