@@ -56,8 +56,8 @@ cookies.click()
 time.sleep(5)
 
 for n in range(100):
-    time.sleep(1)
-    like_button = driver.find_element(By.XPATH,'/html/body/div[1]/div/div[1]/div/div/main/div/div/div[1]/div/div[3]/div/div[4]/button')
-    like_button.click()
+    time.sleep(1) 
+    arrow_left = driver.find_element(By.CSS_SELECTOR, 'html')
+    arrow_left.send_keys(Keys.ARROW_RIGHT)
 
 driver.quit()
