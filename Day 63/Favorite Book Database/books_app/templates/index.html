@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Library</title>
+  </head>
+  <body>
+    <h1>My Library</h1>
+    {% if books == []: %}
+    <p>Library is empty.</p>
+    {% endif %}
+    <ul>
+      {% for book in books %}
+      <li>
+        <form action="{{ url_for('main.delete', id=book.id) }}" method="POST" style="display: inline;">
+          <input type="hidden" name="_method" value="DELETE">
+          <button type="submit">Delete</button>
+        </form>
+        {{book.title}} - {{book.author}} - {{book.rating}}/10
+        <a href="{{ url_for('main.edit', id=book.id) }}">Edit Rating</a>
+      </li>
+      {% endfor %}
+    </ul>
+    <a href="{{ url_for('main.add') }}">Add New Book</a>
+  </body>
+</html>
