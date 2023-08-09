@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cafes</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>List of Cafes</h1>
+    <div>
+        <a href="{{ url_for('add_cafe') }}" class="btn">Add Cafe</a>
+    </div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Map URL</th>
+            <th>Image URL</th>
+            <th>Location</th>
+            <th>Sockets</th>
+            <th>Toilet</th>
+            <th>WiFi</th>
+            <th>Can Take Calls</th>
+            <th>Seats</th>
+            <th>Coffee Price</th>
+            <th>Actions</th>
+        </tr>
+        {% for cafe in cafes %}
+        <tr>
+            <td>{{ cafe[0] }}</td>
+            <td>{{ cafe[1] }}</td>
+            <td>{{ cafe[2] }}</td>
+            <td>{{ cafe[3] }}</td>
+            <td>{{ cafe[4] }}</td>
+            <td>{{ cafe[5] }}</td>
+            <td>{{ cafe[6] }}</td>
+            <td>{{ cafe[7] }}</td>
+            <td>{{ cafe[8] }}</td>
+            <td>{{ cafe[9] }}</td>
+            <td>{{ cafe[10] }}</td>
+            <td>
+                <a href="{{ url_for('remove_cafe', cafe_id=cafe[0]) }}" class="btn">Remove</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
